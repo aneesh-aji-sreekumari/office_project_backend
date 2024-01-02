@@ -52,21 +52,29 @@ public class Main {
     public static void main(String[] args) {
         // Specify the path to your text file
         String filePath = "C:\\Users\\asreekum\\Desktop\\IPL\\IPL-1.txt";
+        String filePath1 = "C:\\Users\\asreekum\\Desktop\\Working\\04000 Cleaning.sgm";
 
         try {
             // Read the contents of the file into a byte array
             byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
+            byte[] fileBytes1 = Files.readAllBytes(Paths.get(filePath1));
 
             // Convert the byte array to a String using the default charset (UTF-8)
             String fileContent = new String(fileBytes);
+            String fileContent1 = new String(fileBytes1);
+            System.out.println(fileContent1);
 
             //OutputFilePath
             String targetPath = "C:\\Users\\asreekum\\Desktop\\IPL\\myOutput.txt";
+            String targetPath1 = "C:\\Users\\asreekum\\Desktop\\Working\\output.sgm";
+
             String outPut = SupsdInfoChanger.addSuperSedeInfoToIPLFigure(fileContent);
             try {
                 Path path = Paths.get(targetPath);
+                Path path1 = Paths.get(targetPath1);
                 //System.out.println(stringArrayList);
                 Files.write(path, outPut.getBytes());
+                Files.write(path1, fileContent1.getBytes());
                 System.out.println("File saved successfully at: " + path.toAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();

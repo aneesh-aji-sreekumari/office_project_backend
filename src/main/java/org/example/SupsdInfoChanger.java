@@ -23,8 +23,11 @@ public class SupsdInfoChanger {
         int[] startAndEnd = PreProcessing.getStartAndEndIndexOfTag(itemdataTag, "msc");
         if(startAndEnd[0] == -1)
             return itemdataTag;
+        String mscTag = itemdataTag.substring(startAndEnd[0], startAndEnd[1]+1);
+        if(mscTag.contains("OPTION"))
+            return itemdataTag;
         String supersededInfoTag =
-                getAllSupersedInfoFromAnMscTag(itemdataTag.substring(startAndEnd[0], startAndEnd[1]+1));
+                getAllSupersedInfoFromAnMscTag(mscTag);
 
         StringBuilder sb = new StringBuilder();
         sb.append(itemdataTag.substring(0, startAndEnd[0]));
@@ -44,10 +47,15 @@ public class SupsdInfoChanger {
         StringBuilder sb = new StringBuilder();
         for(String s: resultList){
             if(s.contains("SUPSD BY")){
+                //(SUPSD BY ITEM 10A)
                 sb.append("<sd>"+ s.substring(9, s.length())+"</sd>");
             }
             else if(s.contains("SUPSDS"))
+                //(SUPSDS ITEM 10)
                 sb.append("<sdes>"+ s.substring(7, s.length())+"</sdes>");
+            else if(s.contains("EFF REV"))
+                sb.append(("<mdl>")+ s.substring(5, s.length()) + "</mdl>");
+                //(EFF REV A THRU REV D) OR (EFF REV E)
         }
 
         return sb.toString();
